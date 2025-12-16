@@ -1,0 +1,68 @@
+server:
+  port: 8082
+  error:
+    include-stacktrace: never
+#  compression:
+#    enabled: true
+#    mime-types: application/javascript,application/json,text/html,text/xml,text/plain,application/wasm
+
+spring:
+  application:
+    name: collaborative-personalized-learning-be
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+minio:
+  url: ${MINIO_URL}
+  access-key: ${MINIO_USERNAME}
+  secret-key: ${MINIO_PASSWORD}
+  buckets:
+    resources: ${MINIO_RESOURCES_BUCKET_NAME}
+    avatars: ${MINIO_AVATARS_BUCKET_NAME}
+
+
+jwt:
+  secret: TmluZS1UYWlsZWQgRm94LCBJIHdhbnQgYSBnaXJsIGZpcmVuZC4=
+  access:
+    #expiration: 900000        # 15 minutes (milliseconds)
+    expiration: 86400000
+  refresh:
+    expiration: 604800000     # 7 days (milliseconds)
+
+cors:
+  allowed-origins:
+    - ${FRONT_END_SERVER:http://localhost:4200}
+
+
+upload:
+  max-size-mb: 50
+  allowed-types:
+    - image/png
+    - image/jpeg
+    - application/pdf
+    - application/vnd.ms-powerpoint # ppt
+    - application/vnd.openxmlformats-officedocument.presentationml.presentation # pptx
+    - application/msword #doc
+    - application/vnd.openxmlformats-officedocument.wordprocessingml.document # docx
+    - application/vnd.ms-excel
+    - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet

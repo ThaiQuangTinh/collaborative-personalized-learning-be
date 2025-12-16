@@ -1,0 +1,3 @@
+DB_URL: jdbc:mysql://localhost:3306/collaborative_personalized_learning
+DB_USERNAME: root
+DB_PASSWORD: Thaiquangtinh@24
