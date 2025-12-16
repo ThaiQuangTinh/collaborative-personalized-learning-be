@@ -17,6 +17,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.LearningPathService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ProgressService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,8 @@ public class LearningPathServiceImpl implements LearningPathService {
     private final CorsProperties corsProperties;
 
     private final LearningPathMapper learningPathMapper;
+
+    private final ProgressService progressService;
 
     @Override
     @Transactional
@@ -132,14 +135,14 @@ public class LearningPathServiceImpl implements LearningPathService {
 
         LocalDateTime now = LocalDateTime.now();
 
-//        for (LearningPath path : learningPaths) {
-//            path.setDeleted(true);
-//            path.setUpdatedAt(now);
-//        }
+        for (LearningPath path : learningPaths) {
+            path.setDeleted(true);
+            path.setUpdatedAt(now);
+        }
 
-//        learningPathRepository.saveAll(learningPaths);
+        learningPathRepository.saveAll(learningPaths);
 
-        learningPathRepository.deleteAll(learningPaths);
+//        learningPathRepository.deleteAll(learningPaths);
     }
 
 
@@ -427,7 +430,9 @@ public class LearningPathServiceImpl implements LearningPathService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        if (learningPathRepository.existsByUser_UserIdAndOriginalPathId(userId, share.getLearningPath().getPathId())) {
+        if (learningPathRepository
+                .existsByUser_UserIdAndOriginalPathIdAndIsDeletedFalse(userId, share.getLearningPath().getPathId())) {
+
             throw new AppException(ErrorCode.LEARNING_PATH_ALREADY_EXISTS);
         }
 
@@ -450,6 +455,11 @@ public class LearningPathServiceImpl implements LearningPathService {
                 clonedLesson.setTopic(clonedTopic);
 
                 lessonRepository.save(clonedLesson);
+
+                progressService.createProgress(
+                        userId,
+                        new CreateProgressRequest(clonedLesson.getLessonId(), LearningStatus.NOT_STARTED)
+                );
 
                 // Clone resources
                 for (Resource res : lesson.getResources()) {

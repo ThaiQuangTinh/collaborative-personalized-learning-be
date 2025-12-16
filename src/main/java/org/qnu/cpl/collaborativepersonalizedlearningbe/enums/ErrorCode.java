@@ -28,6 +28,8 @@ public enum ErrorCode {
     // ---- USER ----
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", "User not found"),
 
+    // ---- ADMIN ----
+    ADMIN_ONLY(HttpStatus.FORBIDDEN, "ADMIN_ONLY", "Only admin is allowed to access this resource"),
 
     // ---- TAG ----
     TAG_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "TAG_NAME_ALREADY_EXISTS", "Tag name already exists for this user"),

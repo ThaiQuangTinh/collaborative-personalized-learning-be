@@ -1,9 +1,11 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.repository;
 
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByEmail(String email);
 
+    boolean existsByUserIdAndRole(String userId, Role role);
+
+    List<User> findAllByIsDeletedFalseOrderByCreatedAtDesc();
 }

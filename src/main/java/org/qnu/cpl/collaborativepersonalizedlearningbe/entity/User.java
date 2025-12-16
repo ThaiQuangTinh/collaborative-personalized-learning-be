@@ -52,6 +52,9 @@ public class User {
     @Column(name = "email_verified")
     private Boolean emailVerified;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> getAllPost(String userId) {
-        List<Post> postList = postRepository.findAllByOrderByCreatedAtDesc();
+        List<Post> postList = postRepository.findAllByIsDeletedFalseOrderByCreatedAtDesc();
 
         List<PostResponse> postResponseList = new ArrayList<>();
 

@@ -30,6 +30,6 @@ public interface LearningPathRepository extends JpaRepository<LearningPath, Stri
 
     List<LearningPath> findAllByUserAndIsArchivedFalseAndIsDeletedFalse(User user);
 
-    boolean existsByUser_UserIdAndOriginalPathId(String userId, String pathId);
+    boolean existsByUser_UserIdAndOriginalPathIdAndIsDeletedFalse(String userId, String pathId);
 
 }

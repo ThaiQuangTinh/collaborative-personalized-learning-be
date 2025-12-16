@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PostRepository  extends JpaRepository<Post, String> {
 
-    List<Post> findAllByOrderByCreatedAtDesc();
+    List<Post> findAllByIsDeletedFalseOrderByCreatedAtDesc();
 
 }
