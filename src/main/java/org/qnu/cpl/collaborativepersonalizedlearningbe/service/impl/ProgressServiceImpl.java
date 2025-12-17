@@ -62,6 +62,7 @@ public class ProgressServiceImpl implements ProgressService {
         Progress progress = progressRepository.findByUser_UserIdAndLesson_LessonId(userId, request.getLessonId())
                 .orElseThrow(() -> new AppException(ErrorCode.PROGRESS_NOT_FOUND));
 
+        System.out.println("Status: " + request.getStatus());
         progress.setStatus(request.getStatus());
         progress.setUpdatedAt(LocalDateTime.now());
 

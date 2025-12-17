@@ -3,8 +3,8 @@ package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Notification;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
+import org.checkerframework.checker.units.qual.A;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.NotificationSourceType;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.NotificationType;
@@ -12,9 +12,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.NotificationMapper;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NotificationResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UnreadNotificationCountResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.NotificationRepository;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.PostRepository;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.NotificationService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -24,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +33,12 @@ public class NotificationServiceImpl implements NotificationService {
     private final UserRepository userRepository;
 
     private final PostRepository postRepository;
+
+    private final LessonRepository lessonRepository;
+
+    private final LearningPathRepository learningPathRepository;
+
+    private final UserSettingRepository userSettingRepository;
 
     private final SimpMessagingTemplate messagingTemplate;
 
@@ -60,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification noti = new Notification();
         noti.setNotificationId(UUIDUtil.generate());
         noti.setUser(user);
-        noti.setMessage(fromUser.getFullname() + " đã thích bài viết của bạn");
+        noti.setMessage("\"" + fromUser.getFullname() + "\" đã thích bài viết của bạn");
         noti.setSourceId(postId);
         noti.setType(NotificationType.POST_LIKED);
         noti.setSourceType(NotificationSourceType.POST);
@@ -88,7 +93,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional
-    public void sendCommentNotification(String userId, String postId, String commentId,String fromUserId) {
+    public void sendCommentNotification(String userId, String postId, String commentId, String fromUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
@@ -108,7 +113,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification noti = new Notification();
         noti.setNotificationId(UUIDUtil.generate());
         noti.setUser(user);
-        noti.setMessage(fromUser.getFullname() + " đã bình luận bài viết của bạn");
+        noti.setMessage("\"" + fromUser.getFullname() + "\" đã bình luận bài viết của bạn");
         noti.setSourceId(postId);
         noti.setType(NotificationType.POST_COMMENTED);
         noti.setSourceType(NotificationSourceType.POST);
@@ -130,7 +135,6 @@ public class NotificationServiceImpl implements NotificationService {
                 "/queue/notifications",
                 response
         );
-
 
         System.out.println("Sent notification to user " + userId);
     }
@@ -207,6 +211,51 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         notificationRepository.deleteAllByUser_UserId(userId);
+    }
+
+    @Override
+    public void sendLessonReminderNotification(String userId, String lessonId, String pathId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new AppException(ErrorCode.LESSON_NOT_FOUND));
+
+        LearningPath learningPath = learningPathRepository.findById(pathId)
+                .orElseThrow(() -> new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND));
+
+        Map<String, Object> meta = Map.of(
+                "pathId", learningPath.getPathId()
+        );
+
+        Notification noti = new Notification();
+        noti.setNotificationId(UUIDUtil.generate());
+        noti.setUser(user);
+        noti.setMessage("Bài học \"" + lesson.getTitle() + "\" trong  \""
+                + learningPath.getTitle() + "\" của bạn sắp đến hạn hoàn thành.");
+        noti.setSourceId(lessonId);
+        noti.setType(NotificationType.DEADLINE_REMINDER);
+        noti.setSourceType(NotificationSourceType.LESSON);
+        noti.setIsRead(false);
+        noti.setSentAt(LocalDateTime.now());
+
+        try {
+            noti.setMetadata(objectMapper.writeValueAsString(meta));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize notification metadata", e);
+        }
+
+        notificationRepository.save(noti);
+
+        NotificationResponse response = NotificationMapper.toResponse(noti);
+
+        messagingTemplate.convertAndSendToUser(
+                userId,
+                "/queue/notifications",
+                response
+        );
+
+        System.out.println("Sent notification to user " + userId);
     }
 
     // Đến hạn hoàn thành lộ trình

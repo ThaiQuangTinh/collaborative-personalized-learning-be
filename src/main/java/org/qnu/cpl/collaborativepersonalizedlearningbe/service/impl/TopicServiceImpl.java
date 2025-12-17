@@ -24,6 +24,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -107,15 +108,39 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    @Transactional
     public List<LessonResponse> getLessonsByTopicId(String topicId) {
         if (!topicRepository.existsById(topicId)) {
             throw new AppException(ErrorCode.TOPIC_NOT_FOUND);
         }
 
-        List<Lesson> lessonResponses = lessonRepository.findAllByTopic_TopicId(topicId);
+        List<Lesson> lessons = lessonRepository.findAllByTopic_TopicId(topicId);
 
-        return lessonResponses.stream().map(LessonMapper::toResponse).toList();
+        LocalDate now = LocalDate.now();
+
+        boolean needSave = false;
+
+        for (Lesson lesson : lessons) {
+            if (lesson.getEndTime() != null
+                    && lesson.getEndTime().toLocalDate().isBefore(now)
+                    && lesson.getStatus() != LearningStatus.COMPLETED
+                    && lesson.getStatus() != LearningStatus.OVERDUE) {
+
+                lesson.setStatus(LearningStatus.OVERDUE);
+                lesson.setUpdatedAt(LocalDateTime.now());
+                needSave = true;
+            }
+        }
+
+        if (needSave) {
+            lessonRepository.saveAll(lessons);
+        }
+
+        return lessons.stream()
+                .map(LessonMapper::toResponse)
+                .toList();
     }
+
 
     @Override
     public List<NoteResponse> getNotesByTopicId(String topicId) {

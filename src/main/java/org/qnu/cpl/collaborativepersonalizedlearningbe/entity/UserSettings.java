@@ -54,4 +54,5 @@ public class UserSettings {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
 }

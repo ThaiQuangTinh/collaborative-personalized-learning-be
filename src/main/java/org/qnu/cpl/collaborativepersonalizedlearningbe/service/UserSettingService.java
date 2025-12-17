@@ -13,4 +13,10 @@ public interface UserSettingService {
 
     UserSettingResponse updateUserSettings(String userId, UpdateUserSettingRequest request);
 
+    Integer getLessonReminderMinutes(String userId);
+
+    boolean isEnabledEmailNotification(String userId);
+
+    boolean isEnabledPushNotitication(String userId);
+
 }

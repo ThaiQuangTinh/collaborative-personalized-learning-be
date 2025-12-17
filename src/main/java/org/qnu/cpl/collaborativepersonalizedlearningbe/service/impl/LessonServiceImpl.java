@@ -15,10 +15,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LessonRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.NoteRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.TopicRepository;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.service.LessonService;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ProgressService;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ResourceService;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.service.TimeCalculationService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +39,10 @@ public class LessonServiceImpl implements LessonService {
 
     private final ProgressService progressService;
 
+    private final ReminderSchedulerService reminderSchedulerService;
+
+    private final UserSettingService userSettingService;
+
     @Override
     public LessonResponse createLesson(String userId, CreateLessonRequest request) {
         Topic topic = topicRepository.findById(request.getTopicId())
@@ -60,6 +61,7 @@ public class LessonServiceImpl implements LessonService {
         lesson.setStartTime(request.getStartTime());
         lesson.setEndTime(request.getEndTime());
         lesson.setDisplayIndex(maxDisplayIndex + 1);
+        lesson.setStatus(LearningStatus.NOT_STARTED);
         lesson.setCreatedAt(LocalDateTime.now());
         lesson.setUpdatedAt(LocalDateTime.now());
 
@@ -72,6 +74,26 @@ public class LessonServiceImpl implements LessonService {
         // Create progress default for lesson.
         progressService.createProgress(
                 userId, new CreateProgressRequest(lesson.getLessonId(), LearningStatus.NOT_STARTED));
+
+        // Schedule to notification
+        if (userSettingService.isEnabledEmailNotification(userId)) {
+            reminderSchedulerService.scheduleLessonReminderViaEmail(
+                    topic.getLearningPath().getUser().getUserId(),
+                    topic.getLearningPath().getUser().getEmail(),
+                    lesson.getTitle(),
+                    topic.getLearningPath().getTitle(),
+                    lesson.getEndTime()
+            );
+        }
+
+        if (userSettingService.isEnabledPushNotitication(userId)) {
+            reminderSchedulerService.scheduleLessonReminderViaPush(
+                    topic.getLearningPath().getUser().getUserId(),
+                    lesson.getLessonId(),
+                    topic.getLearningPath().getPathId(),
+                    lesson.getEndTime()
+            );
+        }
 
         return new LessonResponse(
                 lesson.getLessonId(),
@@ -149,7 +171,7 @@ public class LessonServiceImpl implements LessonService {
             throw new AppException(ErrorCode.LESSON_NOT_FOUND);
         }
 
-        return  resourceService.getAllResourcesByLessonId(lessonId);
+        return resourceService.getAllResourcesByLessonId(lessonId);
     }
 
 }

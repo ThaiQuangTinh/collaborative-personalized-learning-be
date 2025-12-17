@@ -4,10 +4,13 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.MailService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.util.DateTimeUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,29 @@ public class MailServiceImpl implements MailService {
 
         sendHtmlMail(to, subject, html);
     }
+
+    @Override
+    @Async
+    public void sendLessonDeadlineReminder(
+            String to,
+            String lessonTitle,
+            String learningPathName,
+            LocalDateTime deadline
+    ) {
+        String subject = "Nhắc nhở hoàn thành bài học sắp đến hạn";
+
+        String html = buildEmailTemplate(
+                "Sắp đến hạn hoàn thành bài học",
+                """
+                Bài học <b>%s</b> trong lộ trình <b>%s</b> của bạn sắp đến hạn hoàn thành.
+                """.formatted(lessonTitle, learningPathName),
+                DateTimeUtils.formatEndOfDay(deadline),
+                "Hãy dành thời gian hoàn thành bài học đúng hạn để không bị gián đoạn lộ trình học tập của bạn."
+        );
+
+        sendHtmlMail(to, subject, html);
+    }
+
 
     @Async
     public void sendHtmlMail(String to, String subject, String htmlContent) {

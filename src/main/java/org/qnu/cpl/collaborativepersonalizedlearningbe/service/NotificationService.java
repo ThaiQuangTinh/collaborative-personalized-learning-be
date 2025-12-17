@@ -22,4 +22,7 @@ public interface NotificationService {
     UnreadNotificationCountResponse getUnreadCountNotification(String userId);
 
     void deleteAllNotificationByUserId(String userId);
+
+    void sendLessonReminderNotification(String userId, String lessonId, String pathId);
+
 }

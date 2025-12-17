@@ -53,7 +53,7 @@ public class UserSettingServiceImpl implements UserSettingService {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
 
-        UserSettings userSettings = userSettingRepository.findAllByUser_UserId(userId);
+        UserSettings userSettings = userSettingRepository.findByUser_UserId(userId);
 
         return new UserSettingResponse(
                 userSettings.getTheme(),
@@ -72,7 +72,7 @@ public class UserSettingServiceImpl implements UserSettingService {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
 
-        UserSettings userSettings = userSettingRepository.findAllByUser_UserId(userId);
+        UserSettings userSettings = userSettingRepository.findByUser_UserId(userId);
 
         userSettings.setLanguage(Language.VI);
         userSettings.setTheme(Theme.LIGHT);
@@ -106,7 +106,7 @@ public class UserSettingServiceImpl implements UserSettingService {
             }
         }
 
-        UserSettings userSettings = userSettingRepository.findAllByUser_UserId(userId);
+        UserSettings userSettings = userSettingRepository.findByUser_UserId(userId);
 
         userSettings.setTheme(request.getTheme());
         userSettings.setLanguage(request.getLanguage());
@@ -127,4 +127,34 @@ public class UserSettingServiceImpl implements UserSettingService {
                 userSettings.isPushNotificationEnabled()
         );
     }
+
+    @Override
+    public Integer getLessonReminderMinutes(String userId) {
+        UserSettings userSettings = userSettingRepository.findByUser_UserId(userId);
+
+        return userSettings.getLessonReminderMinutes();
+    }
+
+    @Override
+    public boolean isEnabledEmailNotification(String userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        UserSettings userSettings = userSettingRepository.findByUser_UserId(userId);
+
+        return (userSettings.isNotificationEnabled() && userSettings.isEmailNotificationEnabled());
+    }
+
+    @Override
+    public boolean isEnabledPushNotitication(String userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        UserSettings userSettings = userSettingRepository.findByUser_UserId(userId);
+
+        return (userSettings.isNotificationEnabled() && userSettings.isPushNotificationEnabled());
+    }
+
 }

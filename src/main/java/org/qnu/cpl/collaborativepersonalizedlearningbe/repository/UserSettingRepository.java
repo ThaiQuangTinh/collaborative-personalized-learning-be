@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserSettingRepository extends JpaRepository<UserSettings, String> {
 
-    UserSettings findAllByUser_UserId(String userId);
+    UserSettings findByUser_UserId(String userId);
 
 }
