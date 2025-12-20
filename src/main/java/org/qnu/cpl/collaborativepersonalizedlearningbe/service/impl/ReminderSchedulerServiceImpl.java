@@ -42,7 +42,7 @@ public class ReminderSchedulerServiceImpl implements ReminderSchedulerService {
 
         // Mốc chuẩn: 23:59 của ngày đó
         LocalDateTime endOfDay =
-                deadlineDate.atTime(2, 11);
+                deadlineDate.atTime(23, 59);
 
         // Thời điểm gửi mail = 23:59 - X phút
         LocalDateTime scheduleTime =
@@ -85,7 +85,7 @@ public class ReminderSchedulerServiceImpl implements ReminderSchedulerService {
 
         // Mốc chuẩn: 23:59 của ngày đó
         LocalDateTime endOfDay =
-                deadlineDate.atTime(2, 11);
+                deadlineDate.atTime(23, 59);
 
         // Thời điểm gửi mail = 23:59 - X phút
         LocalDateTime scheduleTime =
