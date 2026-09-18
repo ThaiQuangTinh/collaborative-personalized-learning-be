@@ -1,27 +1,25 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Role;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.AdminUserResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.PostRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.AdminUserService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class AdminUserServiceImpl implements AdminUserService {
 
     private final UserRepository userRepository;
-
-    private final PostRepository postRepository;
 
     @Override
     public List<AdminUserResponse> getAllUser(String adminId) {
@@ -41,8 +39,7 @@ public class AdminUserServiceImpl implements AdminUserService {
                     user.getFullname(),
                     user.getRole(),
                     user.getEmailVerified(),
-                    user.getCreatedAt()
-            );
+                    user.getCreatedAt());
 
             adminUserResponseList.add(adminUserResponse);
         }
@@ -66,8 +63,7 @@ public class AdminUserServiceImpl implements AdminUserService {
                 user.getFullname(),
                 user.getRole(),
                 user.getEmailVerified(),
-                user.getCreatedAt()
-        );
+                user.getCreatedAt());
     }
 
     @Override

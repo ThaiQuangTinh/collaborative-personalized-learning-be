@@ -1,6 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.io.FilenameUtils;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Resource;
@@ -10,8 +13,6 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ResourceType;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateFileResourceRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateLinkResourceRequest;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.CreateFileResourceResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.CreateLinkResourceResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ResourceResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ResourceUrlResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LessonRepository;
@@ -24,9 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -81,8 +80,7 @@ public class ResourceServiceImpl implements ResourceService {
                 resource.getExternalLink(),
                 resource.getSizeBytes(),
                 resource.getMimeType(),
-                resourceUrl
-        );
+                resourceUrl);
     }
 
     @Override
@@ -113,8 +111,7 @@ public class ResourceServiceImpl implements ResourceService {
                 resource.getExternalLink(),
                 resource.getSizeBytes(),
                 resource.getMimeType(),
-                ""
-        );
+                "");
     }
 
     @Override

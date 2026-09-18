@@ -6,7 +6,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TagRespo
 public class TagMapper {
 
     public static TagResponse toResponse(Tag tag) {
-        if (tag == null) return null;
+        if (tag == null)
+            return null;
 
         TagResponse res = new TagResponse();
         res.setTagId(tag.getTagId());

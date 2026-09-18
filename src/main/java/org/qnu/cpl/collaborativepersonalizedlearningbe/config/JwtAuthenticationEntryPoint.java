@@ -1,8 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.config;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.TokenException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.ApiError;
@@ -11,10 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -24,8 +26,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request,
-                         HttpServletResponse response,
-                         AuthenticationException authException) throws IOException {
+            HttpServletResponse response,
+            AuthenticationException authException) throws IOException {
 
         ErrorCode code = ErrorCode.INVALID_TOKEN;
 

@@ -1,11 +1,24 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.*;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
+
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateShareLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.DeleteLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ExportLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ImportLearningPathJsonRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.LearningPathImportRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateProgressPercentRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.CreateShareLearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LearningPathExportResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LearningPathStatisticResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NoteResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ShareLearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TagResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TopicResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UpdateLearningPathResponse;
 
 public interface LearningPathService {
 
@@ -38,7 +51,7 @@ public interface LearningPathService {
     List<NoteResponse> getNotesByLearningPathId(String pathId);
 
     CreateShareLearningPathResponse shareLearningPath(String userId, String pathId,
-                                                      CreateShareLearningPathRequest request);
+            CreateShareLearningPathRequest request);
 
     ShareLearningPathResponse getLearningPathByShare(String token);
 
@@ -48,7 +61,7 @@ public interface LearningPathService {
 
     List<LearningPathResponse> importLearningPaths(String userId, List<LearningPathImportRequest> requests);
 
-    List<LearningPathResponse> importJsonLearningPath(String userId,ImportLearningPathJsonRequest request);
+    List<LearningPathResponse> importJsonLearningPath(String userId, ImportLearningPathJsonRequest request);
 
     LearningPathStatisticResponse getLearningPathStatistics(String userId, String pathId);
 

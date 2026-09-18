@@ -1,14 +1,15 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.security;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter

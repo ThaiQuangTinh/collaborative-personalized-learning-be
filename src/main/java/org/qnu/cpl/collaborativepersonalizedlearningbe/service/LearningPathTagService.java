@@ -1,11 +1,10 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateLearningPathTagRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.DeleteLearningPathTagRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.CreateLearningPathTagResponse;
-
-import java.util.List;
-
 
 public interface LearningPathTagService {
 

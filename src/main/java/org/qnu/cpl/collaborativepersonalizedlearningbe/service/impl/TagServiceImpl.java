@@ -1,6 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Tag;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
@@ -18,9 +21,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -97,8 +98,7 @@ public class TagServiceImpl implements TagService {
 
         for (Tag tag : tags) {
             TagResponse tagResponse = new TagResponse(
-                    tag.getTagId(), tag.getTagName(), tag.getTextColor()
-            );
+                    tag.getTagId(), tag.getTagName(), tag.getTextColor());
 
             tagResponses.add(tagResponse);
         }

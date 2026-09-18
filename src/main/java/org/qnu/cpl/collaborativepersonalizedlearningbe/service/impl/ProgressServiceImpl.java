@@ -1,6 +1,7 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Progress;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
@@ -18,8 +19,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -52,8 +52,7 @@ public class ProgressServiceImpl implements ProgressService {
         return new CreateProgressResponse(
                 progress.getProgressId(),
                 progress.getLesson().getLessonId(),
-                progress.getStatus()
-        );
+                progress.getStatus());
     }
 
     @Override
@@ -79,8 +78,7 @@ public class ProgressServiceImpl implements ProgressService {
         return new UpdateProgressResponse(
                 progress.getProgressId(),
                 progress.getLesson().getLessonId(),
-                progress.getStatus()
-        );
+                progress.getStatus());
     }
 
     @Override

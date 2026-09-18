@@ -1,9 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.exception;
 
-import lombok.Getter;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
-
 import org.springframework.security.core.AuthenticationException;
+
+import lombok.Getter;
 
 @Getter
 public class TokenException extends AuthenticationException {

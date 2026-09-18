@@ -19,42 +19,38 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostCommentController {
 
-    private final PostCommentService postCommentService;
+        private final PostCommentService postCommentService;
 
-    @PostMapping()
-    public ResponseEntity<ApiResponse<PostCommentResponse>> createComment(
-            @RequestBody CreatePostCommentRequest request,
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            HttpServletRequest httpRequest
-    ) {
-        PostCommentResponse response =
-                postCommentService.createPostComment(userDetails.getUserId(), request);
+        @PostMapping()
+        public ResponseEntity<ApiResponse<PostCommentResponse>> createComment(
+                        @RequestBody CreatePostCommentRequest request,
+                        @AuthenticationPrincipal CustomUserDetails userDetails,
+                        HttpServletRequest httpRequest) {
+                PostCommentResponse response = postCommentService.createPostComment(userDetails.getUserId(), request);
 
-        return ResponseUtil.created(response, "Comment created successfully!", httpRequest);
-    }
+                return ResponseUtil.created(response, "Comment created successfully!", httpRequest);
+        }
 
-    @PutMapping("/{commentId}")
-    public ResponseEntity<ApiResponse<PostCommentResponse>> updateComment(
-            @PathVariable String commentId,
-            @RequestBody UpdatePostCommentRequest request,
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            HttpServletRequest httpRequest
-    ) {
-        PostCommentResponse response =
-                postCommentService.updatePostComment(userDetails.getUserId(), commentId, request);
+        @PutMapping("/{commentId}")
+        public ResponseEntity<ApiResponse<PostCommentResponse>> updateComment(
+                        @PathVariable String commentId,
+                        @RequestBody UpdatePostCommentRequest request,
+                        @AuthenticationPrincipal CustomUserDetails userDetails,
+                        HttpServletRequest httpRequest) {
+                PostCommentResponse response = postCommentService.updatePostComment(userDetails.getUserId(), commentId,
+                                request);
 
-        return ResponseUtil.success(response, "Comment updated successfully!", HttpStatus.OK, httpRequest);
-    }
+                return ResponseUtil.success(response, "Comment updated successfully!", HttpStatus.OK, httpRequest);
+        }
 
-    @DeleteMapping("/{commentId}")
-    public ResponseEntity<ApiResponse<Object>> deleteComment(
-            @PathVariable String commentId,
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            HttpServletRequest httpRequest
-    ) {
-        postCommentService.deletePostCommentById(userDetails.getUserId(), commentId);
+        @DeleteMapping("/{commentId}")
+        public ResponseEntity<ApiResponse<Object>> deleteComment(
+                        @PathVariable String commentId,
+                        @AuthenticationPrincipal CustomUserDetails userDetails,
+                        HttpServletRequest httpRequest) {
+                postCommentService.deletePostCommentById(userDetails.getUserId(), commentId);
 
-        return ResponseUtil.success(null, "Comment deleted successfully!", HttpStatus.OK, httpRequest);
-    }
+                return ResponseUtil.success(null, "Comment deleted successfully!", HttpStatus.OK, httpRequest);
+        }
 
 }

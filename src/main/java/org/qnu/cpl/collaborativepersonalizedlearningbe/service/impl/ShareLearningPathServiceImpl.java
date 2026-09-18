@@ -1,6 +1,5 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.ShareLearningPath;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
@@ -9,6 +8,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.Learning
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.ShareLearningPathRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ShareLearningPathService;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +37,7 @@ public class ShareLearningPathServiceImpl implements ShareLearningPathService {
                 learningPath.isFavourite(),
                 learningPath.isDeleted(),
                 learningPath.getCreatedAt(),
-                null
-        );
+                null);
     }
 
 }

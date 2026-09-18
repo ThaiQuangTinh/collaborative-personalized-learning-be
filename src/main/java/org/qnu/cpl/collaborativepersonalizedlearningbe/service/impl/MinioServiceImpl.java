@@ -1,11 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.RemoveObjectArgs;
-import io.minio.http.Method;
-import lombok.RequiredArgsConstructor;
+import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.config.UploadProperties;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
@@ -15,8 +12,13 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.http.Method;
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class MinioServiceImpl implements MinioService {
@@ -50,8 +52,7 @@ public class MinioServiceImpl implements MinioService {
                                 .object(objectName)
                                 .stream(inputStream, file.getSize(), -1)
                                 .contentType(contentType)
-                                .build()
-                );
+                                .build());
             }
         } catch (AppException e) {
             throw e;
@@ -67,8 +68,7 @@ public class MinioServiceImpl implements MinioService {
                     io.minio.GetObjectArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
-                            .build()
-            );
+                            .build());
             return new InputStreamResource(is);
         } catch (Exception e) {
             throw new AppException(ErrorCode.MINIO_GET_FAILED);
@@ -84,10 +84,9 @@ public class MinioServiceImpl implements MinioService {
                             .bucket(bucketName)
                             .object(objectName)
                             .expiry(24, TimeUnit.HOURS)
-                            .build()
-            );
+                            .build());
         } catch (Exception e) {
-//            throw new AppException(ErrorCode.MINIO_URL_GENERATE_FAILED);
+            // throw new AppException(ErrorCode.MINIO_URL_GENERATE_FAILED);
             return null;
         }
     }
@@ -99,11 +98,9 @@ public class MinioServiceImpl implements MinioService {
                     RemoveObjectArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
-                            .build()
-            );
+                            .build());
         } catch (Exception e) {
             throw new AppException(ErrorCode.MINIO_DELETE_FAILED);
         }
     }
 }
-

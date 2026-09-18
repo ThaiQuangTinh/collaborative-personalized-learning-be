@@ -1,13 +1,11 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.repository;
 
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Notification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Notification;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 public interface NotificationRepository extends JpaRepository<Notification, String> {
 
     List<Notification> findAllByUser_UserId(String userId);

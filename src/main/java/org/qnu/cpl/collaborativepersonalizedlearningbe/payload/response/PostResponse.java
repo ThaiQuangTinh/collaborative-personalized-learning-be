@@ -1,15 +1,17 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response;
 
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class PostResponse {
 
     private String postId;

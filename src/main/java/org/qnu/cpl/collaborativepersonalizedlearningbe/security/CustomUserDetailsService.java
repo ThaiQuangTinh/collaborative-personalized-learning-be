@@ -1,12 +1,13 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.security;
 
-import lombok.RequiredArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

@@ -1,12 +1,12 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateFileResourceRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateLinkResourceRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ResourceResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ResourceUrlResponse;
 import org.springframework.core.io.InputStreamResource;
-
-import java.util.List;
 
 public interface ResourceService {
 

@@ -1,10 +1,26 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.config.CorsProperties;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPathTag;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Note;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Progress;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Resource;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.ShareLearningPath;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Tag;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Topic;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.LearningStatus;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.SharePermission;
@@ -13,20 +29,50 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.LearningPathMapper
 import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.NoteMapper;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.TagMapper;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.TopicMapper;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.*;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.*;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateProgressRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateShareLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.DeleteLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ExportLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ImportLearningPathJsonRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.LearningPathImportRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.LessonImportRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ResourceImportRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.TopicImportRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateLearningPathRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateProgressPercentRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.CreateShareLearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LearningPathExportResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LearningPathStatisticResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LessonExportResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NoteResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ResourceExportResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ShareLearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TagResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TopicExportResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TopicResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UpdateLearningPathResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LearningPathRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LearningPathTagRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LessonRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.NoteRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.ProgressRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.ResourceRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.ShareLearningPathRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.TagRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.TopicRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.LearningPathService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ProgressService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -97,8 +143,7 @@ public class LearningPathServiceImpl implements LearningPathService {
                 learningPath.isArchived(),
                 learningPath.isDeleted(),
                 learningPath.getCreatedAt(),
-                null
-        );
+                null);
     }
 
     @Override
@@ -107,9 +152,9 @@ public class LearningPathServiceImpl implements LearningPathService {
         LearningPath learningPath = learningPathRepository.findById(pathId)
                 .orElseThrow(() -> new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND));
 
-//        if (learningPathRepository.existsByTitle(request.getTitle())) {
-//            throw new AppException(ErrorCode.LEARNING_PATH_TITLE_ALREADY_EXISTS);
-//        }
+        // if (learningPathRepository.existsByTitle(request.getTitle())) {
+        // throw new AppException(ErrorCode.LEARNING_PATH_TITLE_ALREADY_EXISTS);
+        // }
 
         learningPath.setTitle(request.getTitle());
         learningPath.setDescription(request.getDescription());
@@ -120,8 +165,7 @@ public class LearningPathServiceImpl implements LearningPathService {
         return new UpdateLearningPathResponse(
                 learningPath.getPathId(),
                 learningPath.getTitle(),
-                learningPath.getDescription()
-        );
+                learningPath.getDescription());
     }
 
     @Override
@@ -142,9 +186,8 @@ public class LearningPathServiceImpl implements LearningPathService {
 
         learningPathRepository.saveAll(learningPaths);
 
-//        learningPathRepository.deleteAll(learningPaths);
+        // learningPathRepository.deleteAll(learningPaths);
     }
-
 
     @Override
     @Transactional
@@ -243,8 +286,7 @@ public class LearningPathServiceImpl implements LearningPathService {
             throw new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND);
         }
 
-        List<LearningPathTag> learningPathTagList =
-                learningPathTagRepository.findAllByLearningPath_PathId(pathId);
+        List<LearningPathTag> learningPathTagList = learningPathTagRepository.findAllByLearningPath_PathId(pathId);
 
         List<String> tagIdList = new ArrayList<>();
 
@@ -321,8 +363,7 @@ public class LearningPathServiceImpl implements LearningPathService {
                 learningPath.isFavourite(),
                 learningPath.isDeleted(),
                 learningPath.getCreatedAt(),
-                null
-        );
+                null);
     }
 
     @Override
@@ -341,8 +382,7 @@ public class LearningPathServiceImpl implements LearningPathService {
     public CreateShareLearningPathResponse shareLearningPath(
             String userId,
             String pathId,
-            CreateShareLearningPathRequest request
-    ) {
+            CreateShareLearningPathRequest request) {
 
         // 1. Check user
         User user = userRepository.findById(userId)
@@ -353,8 +393,7 @@ public class LearningPathServiceImpl implements LearningPathService {
                 .orElseThrow(() -> new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND));
 
         // 3. Kiểm tra LearningPath đã từng share chưa
-        Optional<ShareLearningPath> existingShareOpt =
-                shareLearningPathRepository.findByLearningPath_PathId(pathId);
+        Optional<ShareLearningPath> existingShareOpt = shareLearningPathRepository.findByLearningPath_PathId(pathId);
 
         String uiHost = corsProperties.getAllowedOrigins().get(0);
 
@@ -366,8 +405,8 @@ public class LearningPathServiceImpl implements LearningPathService {
 
             shareLearningPathRepository.save(existing);
 
-            String existingUrl =
-                    uiHost + "/learning-path/" + existing.getShareToken() + "/share" + "?perm=" + existing.getSharePermission();
+            String existingUrl = uiHost + "/learning-path/" + existing.getShareToken() + "/share" + "?perm="
+                    + existing.getSharePermission();
 
             return CreateShareLearningPathResponse.builder()
                     .token(existing.getShareToken())
@@ -378,8 +417,8 @@ public class LearningPathServiceImpl implements LearningPathService {
 
         // ------------ CASE 2: CHƯA SHARE → TẠO MỚI ------------
         String newToken = UUIDUtil.generate();
-        String newUrl =
-                "http://localhost:3000/learning-path/" + newToken + "/share" + "?perm=" + request.getSharePermission();
+        String newUrl = "http://localhost:3000/learning-path/" + newToken + "/share" + "?perm="
+                + request.getSharePermission();
 
         ShareLearningPath newShare = new ShareLearningPath();
         newShare.setShareId(UUIDUtil.generate());
@@ -412,8 +451,7 @@ public class LearningPathServiceImpl implements LearningPathService {
         return new ShareLearningPathResponse(
                 shareLearningPath.getSharedByUser().getUserId(),
                 shareLearningPath.getLearningPath().getPathId(),
-                shareLearningPath.getSharePermission()
-        );
+                shareLearningPath.getSharePermission());
     }
 
     @Override
@@ -458,8 +496,7 @@ public class LearningPathServiceImpl implements LearningPathService {
 
                 progressService.createProgress(
                         userId,
-                        new CreateProgressRequest(clonedLesson.getLessonId(), LearningStatus.NOT_STARTED)
-                );
+                        new CreateProgressRequest(clonedLesson.getLessonId(), LearningStatus.NOT_STARTED));
 
                 // Clone resources
                 for (Resource res : lesson.getResources()) {
@@ -483,8 +520,7 @@ public class LearningPathServiceImpl implements LearningPathService {
                 learningPathCloned.isArchived(),
                 learningPathCloned.isDeleted(),
                 learningPathCloned.getCreatedAt(),
-                null
-        );
+                null);
     }
 
     @Override
@@ -655,8 +691,7 @@ public class LearningPathServiceImpl implements LearningPathService {
             List<LearningPathImportRequest> requests = mapper.readValue(
                     request.getFile().getInputStream(),
                     new TypeReference<List<LearningPathImportRequest>>() {
-                    }
-            );
+                    });
 
             learningPaths = importLearningPaths(userId, requests);
         } catch (IOException e) {
@@ -668,8 +703,7 @@ public class LearningPathServiceImpl implements LearningPathService {
 
     private LearningPathStatisticResponse buildLearningPathStatistic(
             User user,
-            LearningPath learningPath
-    ) {
+            LearningPath learningPath) {
 
         LearningPathStatisticResponse res = new LearningPathStatisticResponse();
         res.setPathId(learningPath.getPathId());
@@ -735,73 +769,76 @@ public class LearningPathServiceImpl implements LearningPathService {
         return res;
     }
 
-//    @Transactional
-//    @Override
-//    public LearningPathStatisticResponse getLearningPathStatistics(String userId, String pathId) {
-//
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-//
-//        LearningPath learningPath = learningPathRepository.findById(pathId)
-//                .orElseThrow(() -> new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND));
-//
-//        LearningPathStatisticResponse res = new LearningPathStatisticResponse();
-//
-//        // 1. Tổng số chủ đề
-//        List<Topic> topics = learningPath.getTopics();
-//        res.setTotalTopics(topics.size());
-//
-//        // 2. Tổng số bài học
-//        List<Lesson> lessons = topics.stream()
-//                .flatMap(t -> t.getLessons().stream())
-//                .toList();
-//
-//        int totalLessons = lessons.size();
-//        res.setTotalLessons(totalLessons);
-//
-//        // 3. Lấy progress theo user & list lesson
-//        List<Progress> progresses = progressRepository.findAllByUserAndLessonIn(user, lessons);
-//
-//        int completedLessons = (int) progresses.stream()
-//                .filter(p -> p.getStatus() == LearningStatus.COMPLETED)
-//                .count();
-//
-//        res.setCompletedLessons(completedLessons);
-//        res.setRemainingLessons(totalLessons - completedLessons);
-//
-//        // 4. Tiến độ tổng thể %
-//        int progressPercent = totalLessons == 0 ? 0 : (completedLessons * 100) / totalLessons;
-//        res.setOverallProgress(progressPercent);
-//
-//        // 5. Tính thời gian học: start → end
-//        LocalDateTime start = learningPath.getStartTime();
-//        LocalDateTime end = learningPath.getEndTime();
-//
-//        if (start != null && end != null) {
-//            // Chỉ lấy phần LocalDate để tính tháng/ngày
-//            LocalDate startDate = start.toLocalDate();
-//            LocalDate endDate = end.toLocalDate();
-//
-//            Period period = Period.between(startDate, endDate);
-//
-//            res.setDurationMonths((long) period.getMonths());
-//            res.setDurationDays((long) period.getDays());
-//
-//            res.setStartDate(start.toString());
-//            res.setEndDate(end.toString());
-//        }
-//
-//        // 6. Lấy ngày cập nhật gần nhất
-//        LocalDateTime lastUpdate = progresses.stream()
-//                .map(Progress::getUpdatedAt)
-//                .filter(Objects::nonNull)
-//                .max(LocalDateTime::compareTo)
-//                .orElse(learningPath.getUpdatedAt());
-//
-//        res.setLastUpdated(lastUpdate != null ? lastUpdate.toString() : null);
-//
-//        return res;
-//    }
+    // @Transactional
+    // @Override
+    // public LearningPathStatisticResponse getLearningPathStatistics(String userId,
+    // String pathId) {
+    //
+    // User user = userRepository.findById(userId)
+    // .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    //
+    // LearningPath learningPath = learningPathRepository.findById(pathId)
+    // .orElseThrow(() -> new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND));
+    //
+    // LearningPathStatisticResponse res = new LearningPathStatisticResponse();
+    //
+    // // 1. Tổng số chủ đề
+    // List<Topic> topics = learningPath.getTopics();
+    // res.setTotalTopics(topics.size());
+    //
+    // // 2. Tổng số bài học
+    // List<Lesson> lessons = topics.stream()
+    // .flatMap(t -> t.getLessons().stream())
+    // .toList();
+    //
+    // int totalLessons = lessons.size();
+    // res.setTotalLessons(totalLessons);
+    //
+    // // 3. Lấy progress theo user & list lesson
+    // List<Progress> progresses = progressRepository.findAllByUserAndLessonIn(user,
+    // lessons);
+    //
+    // int completedLessons = (int) progresses.stream()
+    // .filter(p -> p.getStatus() == LearningStatus.COMPLETED)
+    // .count();
+    //
+    // res.setCompletedLessons(completedLessons);
+    // res.setRemainingLessons(totalLessons - completedLessons);
+    //
+    // // 4. Tiến độ tổng thể %
+    // int progressPercent = totalLessons == 0 ? 0 : (completedLessons * 100) /
+    // totalLessons;
+    // res.setOverallProgress(progressPercent);
+    //
+    // // 5. Tính thời gian học: start → end
+    // LocalDateTime start = learningPath.getStartTime();
+    // LocalDateTime end = learningPath.getEndTime();
+    //
+    // if (start != null && end != null) {
+    // // Chỉ lấy phần LocalDate để tính tháng/ngày
+    // LocalDate startDate = start.toLocalDate();
+    // LocalDate endDate = end.toLocalDate();
+    //
+    // Period period = Period.between(startDate, endDate);
+    //
+    // res.setDurationMonths((long) period.getMonths());
+    // res.setDurationDays((long) period.getDays());
+    //
+    // res.setStartDate(start.toString());
+    // res.setEndDate(end.toString());
+    // }
+    //
+    // // 6. Lấy ngày cập nhật gần nhất
+    // LocalDateTime lastUpdate = progresses.stream()
+    // .map(Progress::getUpdatedAt)
+    // .filter(Objects::nonNull)
+    // .max(LocalDateTime::compareTo)
+    // .orElse(learningPath.getUpdatedAt());
+    //
+    // res.setLastUpdated(lastUpdate != null ? lastUpdate.toString() : null);
+    //
+    // return res;
+    // }
 
     @Transactional(readOnly = true)
     @Override
@@ -823,14 +860,13 @@ public class LearningPathServiceImpl implements LearningPathService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        List<LearningPath> learningPaths =
-                learningPathRepository.findAllByUserAndIsArchivedFalseAndIsDeletedFalse(user);
+        List<LearningPath> learningPaths = learningPathRepository
+                .findAllByUserAndIsArchivedFalseAndIsDeletedFalse(user);
 
         return learningPaths.stream()
                 .map(path -> buildLearningPathStatistic(user, path))
                 .toList();
     }
-
 
     @Override
     @Transactional

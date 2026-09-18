@@ -1,6 +1,7 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.UserSettings;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
@@ -16,7 +17,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -61,8 +62,7 @@ public class UserSettingServiceImpl implements UserSettingService {
                 userSettings.isNotificationEnabled(),
                 userSettings.getLessonReminderMinutes(),
                 userSettings.isEmailNotificationEnabled(),
-                userSettings.isPushNotificationEnabled()
-        );
+                userSettings.isPushNotificationEnabled());
     }
 
     @Override
@@ -90,8 +90,7 @@ public class UserSettingServiceImpl implements UserSettingService {
                 userSettings.isNotificationEnabled(),
                 userSettings.getLessonReminderMinutes(),
                 userSettings.isEmailNotificationEnabled(),
-                userSettings.isPushNotificationEnabled()
-        );
+                userSettings.isPushNotificationEnabled());
     }
 
     @Override
@@ -124,8 +123,7 @@ public class UserSettingServiceImpl implements UserSettingService {
                 userSettings.isNotificationEnabled(),
                 userSettings.getLessonReminderMinutes(),
                 userSettings.isEmailNotificationEnabled(),
-                userSettings.isPushNotificationEnabled()
-        );
+                userSettings.isPushNotificationEnabled());
     }
 
     @Override

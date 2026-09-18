@@ -1,11 +1,13 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.model;
 
+import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Role;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Role;
 
 @Data
 @Builder

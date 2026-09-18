@@ -1,7 +1,5 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.ApiResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateUserSettingRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UserSettingResponse;
@@ -10,7 +8,15 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.service.UserSettingServic
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/user-settings")
@@ -19,7 +25,7 @@ public class UserSettingController {
 
     private final UserSettingService userSettingService;
 
-    //    GET /api/user-settings/me
+    // GET /api/user-settings/me
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserSettingResponse>> getSettingByUserId(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -30,7 +36,7 @@ public class UserSettingController {
         return ResponseUtil.created(response, "Get user settings successfully!", httpRequest);
     }
 
-    //    POST /api/user-settings/default
+    // POST /api/user-settings/default
     @PostMapping("/default")
     public ResponseEntity<ApiResponse<UserSettingResponse>> setDefaultSettingsForUser(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -41,7 +47,7 @@ public class UserSettingController {
         return ResponseUtil.created(response, "Get user settings successfully!", httpRequest);
     }
 
-    //    PATCH /api/user-settings/me
+    // PATCH /api/user-settings/me
     @PatchMapping("/me")
     public ResponseEntity<ApiResponse<UserSettingResponse>> updateUserSettingsByUserId(
             @RequestBody UpdateUserSettingRequest request,

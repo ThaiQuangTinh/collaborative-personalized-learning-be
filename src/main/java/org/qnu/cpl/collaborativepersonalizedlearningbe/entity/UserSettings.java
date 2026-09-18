@@ -1,17 +1,29 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Language;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Theme;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user_settings")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSettings {
@@ -25,29 +37,29 @@ public class UserSettings {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "theme", nullable = false)
     private Theme theme = Theme.AUTO;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "language", nullable = false)
     private Language language = Language.VI;
 
-    @Column(nullable = false)
+    @Column(name = "notificationEnabled", nullable = false)
     private boolean notificationEnabled = false;
 
-    @Column(nullable = false)
+    @Column(name = "lessonReminderMinutes", nullable = false)
     private Integer lessonReminderMinutes = 60;
 
-    @Column(nullable = false)
+    @Column(name = "emailNotificationEnabled", nullable = false)
     private boolean emailNotificationEnabled = false;
 
-    @Column(nullable = false)
+    @Column(name = "pushNotificationEnabled", nullable = false)
     private boolean pushNotificationEnabled = false;
 
-    @Column(nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(nullable = false)
+    @Column(name = "updatedAt", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @PreUpdate

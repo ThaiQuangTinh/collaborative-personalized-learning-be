@@ -6,7 +6,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NoteResp
 public class NoteMapper {
 
     public static NoteResponse toResponse(Note note) {
-        if (note == null) return null;
+        if (note == null)
+            return null;
 
         NoteResponse res = new NoteResponse();
         res.setNoteId(note.getNoteId());

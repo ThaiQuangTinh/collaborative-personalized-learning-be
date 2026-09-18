@@ -1,14 +1,15 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.security;
 
-import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
+import java.util.Map;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.constants.Constants;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -22,8 +23,7 @@ public class PasswordResetTokenUtil {
         return jwtTokenUtil.generateToken(
                 Map.of("type", "password_reset"),
                 user.getUserId(),
-                resetTokenExpiration
-        );
+                resetTokenExpiration);
     }
 
     public void validateResetToken(String token) {

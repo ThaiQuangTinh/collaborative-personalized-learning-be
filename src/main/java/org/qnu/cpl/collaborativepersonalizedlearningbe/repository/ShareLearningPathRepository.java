@@ -1,9 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.repository;
 
+import java.util.Optional;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.ShareLearningPath;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 
 public interface ShareLearningPathRepository extends JpaRepository<ShareLearningPath, String> {
 
@@ -14,4 +14,3 @@ public interface ShareLearningPathRepository extends JpaRepository<ShareLearning
     Optional<ShareLearningPath> findByLearningPath_PathId(String pathId);
 
 }
-

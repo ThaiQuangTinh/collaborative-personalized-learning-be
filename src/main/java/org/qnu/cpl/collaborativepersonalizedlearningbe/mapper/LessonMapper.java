@@ -6,7 +6,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LessonRe
 public class LessonMapper {
 
     public static LessonResponse toResponse(Lesson lesson) {
-        if (lesson == null) return null;
+        if (lesson == null)
+            return null;
 
         LessonResponse res = new LessonResponse();
         res.setLessonId(lesson.getLessonId());

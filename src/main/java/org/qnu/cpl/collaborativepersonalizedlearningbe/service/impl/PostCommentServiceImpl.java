@@ -1,6 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Post;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.PostComment;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
@@ -19,9 +22,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.service.UserService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

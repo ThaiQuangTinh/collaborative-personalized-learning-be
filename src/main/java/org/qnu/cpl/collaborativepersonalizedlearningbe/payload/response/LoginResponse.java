@@ -1,7 +1,11 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response;
 
-import lombok.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.UserInfo;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

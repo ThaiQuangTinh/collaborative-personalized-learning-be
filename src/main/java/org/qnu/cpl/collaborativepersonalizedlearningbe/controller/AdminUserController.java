@@ -1,18 +1,22 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.ApiResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.AdminPostResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.AdminUserResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.security.CustomUserDetails;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.AdminUserService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/admin/users")
@@ -21,7 +25,7 @@ public class AdminUserController {
 
     private final AdminUserService adminUserService;
 
-    //    GET    /api/admin/users
+    // GET /api/admin/users
     @GetMapping
     public ResponseEntity<ApiResponse<List<AdminUserResponse>>> getAllUsers(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -32,7 +36,7 @@ public class AdminUserController {
         return ResponseUtil.created(response, "Get all user successfully!", httpRequest);
     }
 
-    //    GET    /api/admin/users/{userId}
+    // GET /api/admin/users/{userId}
     @GetMapping("{userId}")
     public ResponseEntity<ApiResponse<AdminUserResponse>> getUserById(
             @PathVariable String userId,
@@ -44,7 +48,7 @@ public class AdminUserController {
         return ResponseUtil.created(response, "Get user successfully!", httpRequest);
     }
 
-    //    DELETE /api/admin/users/{userId}
+    // DELETE /api/admin/users/{userId}
     @DeleteMapping("{userId}")
     public ResponseEntity<ApiResponse<AdminUserResponse>> deletUserById(
             @PathVariable String userId,

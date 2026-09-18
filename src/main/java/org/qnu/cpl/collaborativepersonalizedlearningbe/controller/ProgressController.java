@@ -1,7 +1,5 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.ApiResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateProgressRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateProgressRequest;
@@ -12,7 +10,14 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ProgressService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/progresses")

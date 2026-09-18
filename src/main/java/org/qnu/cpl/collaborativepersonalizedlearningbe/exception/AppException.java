@@ -1,7 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.exception;
 
-import lombok.Getter;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
+
+import lombok.Getter;
 
 @Getter
 public class AppException extends RuntimeException {

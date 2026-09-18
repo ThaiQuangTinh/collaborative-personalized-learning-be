@@ -1,6 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPathTag;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPathTagId;
@@ -17,9 +20,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.service.LearningPathTagSe
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -57,10 +58,8 @@ public class LearningPathTagServiceImpl implements LearningPathTagService {
             responses.add(new CreateLearningPathTagResponse(
                     learningPath.getPathId(),
                     tag.getTagId(),
-                    tag.getTagName()
-            ));
+                    tag.getTagName()));
         }
-
 
         return responses;
     }
@@ -69,8 +68,7 @@ public class LearningPathTagServiceImpl implements LearningPathTagService {
     @Transactional
     public void deleteLearningPathTag(DeleteLearningPathTagRequest request) {
         LearningPathTagId learningPathTagId = new LearningPathTagId(
-                request.getPathId(), request.getTagId()
-        );
+                request.getPathId(), request.getTagId());
 
         if (!learningPathTagRepository.existsById(learningPathTagId)) {
             throw new AppException(ErrorCode.TAG_NOT_ATTACHED_TO_LEARNING_PATH);

@@ -1,13 +1,18 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Post;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreatePostRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdatePostRequest;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.PostCommentResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.PostResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UserPostResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.PostLikeRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.PostRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
@@ -17,9 +22,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.service.UserService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -44,11 +47,10 @@ public class PostServiceImpl implements PostService {
         for (Post post : postList) {
             UserPostResponse userPostResponse = new UserPostResponse(
                     post.getUser().getFullname(),
-                    userService.getAvatarUrlByUserId(post.getUser().getUserId()).getAvatarUrl()
-            );
+                    userService.getAvatarUrlByUserId(post.getUser().getUserId()).getAvatarUrl());
 
-            List<PostCommentResponse> postCommentResponseList =
-                    postCommentService.findAllCommentByPostId(userId, post.getPostId());
+            List<PostCommentResponse> postCommentResponseList = postCommentService.findAllCommentByPostId(userId,
+                    post.getPostId());
 
             PostResponse postResponse = new PostResponse();
             postResponse.setPostId(post.getPostId());
@@ -80,7 +82,7 @@ public class PostServiceImpl implements PostService {
         post.setPostId(UUIDUtil.generate());
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
-//        post.setSharedLearningPath();
+        // post.setSharedLearningPath();
         post.setExternalLink(request.getExternalLink());
         post.setSharedLearningPath(null);
         post.setCreatedAt(LocalDateTime.now());
@@ -90,8 +92,7 @@ public class PostServiceImpl implements PostService {
 
         UserPostResponse userPostResponse = new UserPostResponse(
                 post.getUser().getFullname(),
-                userService.getAvatarUrlByUserId(userId).getAvatarUrl()
-        );
+                userService.getAvatarUrlByUserId(userId).getAvatarUrl());
 
         PostResponse postResponse = new PostResponse();
         postResponse.setPostId(post.getPostId());
@@ -127,8 +128,7 @@ public class PostServiceImpl implements PostService {
 
         UserPostResponse userPostResponse = new UserPostResponse(
                 post.getUser().getFullname(),
-                userService.getAvatarUrlByUserId(userId).getAvatarUrl()
-        );
+                userService.getAvatarUrlByUserId(userId).getAvatarUrl());
 
         PostResponse postResponse = new PostResponse();
         postResponse.setPostId(post.getPostId());

@@ -1,18 +1,30 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.ApiResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.EmailVerificationRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ForgotPasswordRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.LoginRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.RegisterRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ResetPasswordRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.TokenRefreshRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.VerifyEmailCodeRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.VerifyResetPasswordCodeRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LoginResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TokenRefreshResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.RegisterResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TokenRefreshResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.VerifyResetPasswordCodeResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.AuthService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.ResponseUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -114,4 +126,3 @@ public class AuthController {
     }
 
 }
-

@@ -1,14 +1,17 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response;
 
-import lombok.*;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Language;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Theme;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class UserSettingResponse {
 
     private Theme theme = Theme.AUTO;

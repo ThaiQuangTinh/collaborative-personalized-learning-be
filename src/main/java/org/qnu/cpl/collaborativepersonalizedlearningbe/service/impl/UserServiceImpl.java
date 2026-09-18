@@ -1,6 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.apache.commons.io.FilenameUtils;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Notification;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
@@ -24,8 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -98,10 +99,8 @@ public class UserServiceImpl implements UserService {
                 user.getAddress(),
                 user.getGender(),
                 user.getEmailVerified(),
-                user.getCreatedAt()
-        );
+                user.getCreatedAt());
     }
-
 
     @Override
     public void changePassword(String userId, UserChangePasswordRequest request) {
@@ -145,8 +144,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return new UploadAvatarResponse(
-                this.getAvatarUrlByUserId(userId).getAvatarUrl()
-        );
+                this.getAvatarUrlByUserId(userId).getAvatarUrl());
     }
 
     @Override
@@ -164,7 +162,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        List<Notification> notifications = notificationRepository.findAllByUser_UserId(userId);
+        List<Notification> notifications = notificationRepository.findAllByUser_UserId(user.getUserId());
 
         return notifications.stream().map(NotificationMapper::toResponse).toList();
     }

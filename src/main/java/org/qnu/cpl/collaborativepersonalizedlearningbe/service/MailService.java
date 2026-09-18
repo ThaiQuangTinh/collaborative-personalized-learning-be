@@ -1,7 +1,5 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface MailService {
@@ -14,7 +12,6 @@ public interface MailService {
 
     void sendLessonDeadlineReminder(
             String to, String lessonTitle,
-            String learningPathName, LocalDateTime deadline
-    );
+            String learningPathName, LocalDateTime deadline);
 
 }

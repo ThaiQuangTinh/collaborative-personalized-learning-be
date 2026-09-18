@@ -1,6 +1,5 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.VerificationCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
@@ -8,6 +7,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.VerificationCodeRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.VerificationCodeService;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +34,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     @Override
     public VerificationCode findByUserIdAndCode(String userId, String code) {
         return verificationCodeRepository.findByUserUserIdAndCode(
-                userId, code
-        ).orElseThrow(() -> new AppException(ErrorCode.INVALID_VERIFICATION_CODE));
+                userId, code).orElseThrow(() -> new AppException(ErrorCode.INVALID_VERIFICATION_CODE));
     }
 
 }

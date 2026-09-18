@@ -1,9 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NotificationResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UnreadNotificationCountResponse;
-
-import java.util.List;
 
 public interface NotificationService {
 

@@ -1,19 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ScheduleRequest;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.service.MailService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.concurrent.ScheduledFuture;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/test")

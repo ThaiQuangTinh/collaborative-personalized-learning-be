@@ -1,6 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Note;
@@ -24,9 +27,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -69,8 +70,7 @@ public class TopicServiceImpl implements TopicService {
                 topic.getDisplayIndex(),
                 topic.getStartTime(),
                 topic.getEndTime(),
-                topic.getStatus()
-        );
+                topic.getStatus());
     }
 
     @Override
@@ -94,8 +94,7 @@ public class TopicServiceImpl implements TopicService {
                 topic.getDisplayIndex(),
                 topic.getStartTime(),
                 topic.getEndTime(),
-                topic.getStatus()
-        );
+                topic.getStatus());
     }
 
     @Override
@@ -140,7 +139,6 @@ public class TopicServiceImpl implements TopicService {
                 .map(LessonMapper::toResponse)
                 .toList();
     }
-
 
     @Override
     public List<NoteResponse> getNotesByTopicId(String topicId) {

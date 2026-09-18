@@ -1,8 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.AdminUserResponse;
-
 import java.util.List;
+
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.AdminUserResponse;
 
 public interface AdminUserService {
 

@@ -1,6 +1,9 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Topic;
@@ -9,9 +12,7 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.TopicRepositor
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.TimeCalculationService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,6 @@ public class TimeCalculationServiceImpl implements TimeCalculationService {
 
         topicRepository.save(fresh);
     }
-
 
     @Override
     public void recalcLearningPathTime(LearningPath path) {

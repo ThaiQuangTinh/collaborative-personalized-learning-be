@@ -1,17 +1,22 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
+import java.security.Key;
+import java.util.Date;
+import java.util.Map;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.Map;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenUtil {
@@ -44,8 +49,7 @@ public class JwtTokenUtil {
         return generateToken(Map.of(
                 "username", user.getUsername(),
                 "email", user.getEmail(),
-                "role", user.getRole()
-        ), user.getUserId(), accessTokenExpiration);
+                "role", user.getRole()), user.getUserId(), accessTokenExpiration);
     }
 
     public String generateRefreshToken(User user) {
@@ -60,11 +64,9 @@ public class JwtTokenUtil {
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
-        }
-        catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) {
             throw new AppException(ErrorCode.TOKEN_EXPIRED);
-        }
-        catch (JwtException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new AppException(ErrorCode.INVALID_TOKEN);
         }
     }
@@ -77,7 +79,6 @@ public class JwtTokenUtil {
 
         return null;
     }
-
 
     // --- Extract claims ---
     public Claims getAllClaims(String token) {

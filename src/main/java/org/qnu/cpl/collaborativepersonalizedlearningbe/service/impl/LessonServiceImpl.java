@@ -1,6 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Note;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Topic;
@@ -11,17 +13,23 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.NoteMapper;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateLessonRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateProgressRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateLessonRequest;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LessonResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NoteResponse;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.ResourceResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LessonRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.NoteRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.TopicRepository;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.service.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.LessonService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ProgressService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ReminderSchedulerService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.ResourceService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.TimeCalculationService;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.service.UserSettingService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -82,8 +90,7 @@ public class LessonServiceImpl implements LessonService {
                     topic.getLearningPath().getUser().getEmail(),
                     lesson.getTitle(),
                     topic.getLearningPath().getTitle(),
-                    lesson.getEndTime()
-            );
+                    lesson.getEndTime());
         }
 
         if (userSettingService.isEnabledPushNotitication(userId)) {
@@ -91,8 +98,7 @@ public class LessonServiceImpl implements LessonService {
                     topic.getLearningPath().getUser().getUserId(),
                     lesson.getLessonId(),
                     topic.getLearningPath().getPathId(),
-                    lesson.getEndTime()
-            );
+                    lesson.getEndTime());
         }
 
         return new LessonResponse(
@@ -102,8 +108,7 @@ public class LessonServiceImpl implements LessonService {
                 lesson.getStatus(),
                 lesson.getStartTime(),
                 lesson.getEndTime(),
-                false
-        );
+                false);
     }
 
     @Override
@@ -128,8 +133,7 @@ public class LessonServiceImpl implements LessonService {
                 lesson.getStatus(),
                 lesson.getStartTime(),
                 lesson.getEndTime(),
-                false
-        );
+                false);
     }
 
     @Override
@@ -152,7 +156,6 @@ public class LessonServiceImpl implements LessonService {
         timeCalculationService.recalcTopicTime(topic);
         timeCalculationService.recalcLearningPathTime(topic.getLearningPath());
     }
-
 
     @Override
     public List<NoteResponse> getNotesByLessonId(String lessonId) {

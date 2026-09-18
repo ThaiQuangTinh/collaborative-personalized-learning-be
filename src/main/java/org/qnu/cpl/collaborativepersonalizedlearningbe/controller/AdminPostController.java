@@ -1,19 +1,22 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.ApiResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.RegisterRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.AdminPostResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.RegisterResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.security.CustomUserDetails;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.AdminPostService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/admin/posts")
@@ -22,7 +25,7 @@ public class AdminPostController {
 
     private final AdminPostService adminPostService;
 
-    //    GET    /api/admin/posts
+    // GET /api/admin/posts
     @GetMapping
     public ResponseEntity<ApiResponse<List<AdminPostResponse>>> getAllPosts(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -33,7 +36,7 @@ public class AdminPostController {
         return ResponseUtil.created(response, "Get all post successfully!", httpRequest);
     }
 
-    //    GET    /api/admin/posts/{postId}
+    // GET /api/admin/posts/{postId}
     @GetMapping("{postId}")
     public ResponseEntity<ApiResponse<AdminPostResponse>> getPostById(
             @PathVariable String postId,
@@ -45,7 +48,7 @@ public class AdminPostController {
         return ResponseUtil.created(response, "Get post successfully!", httpRequest);
     }
 
-    //    DELETE /api/admin/posts/{postId}
+    // DELETE /api/admin/posts/{postId}
     @DeleteMapping("{postId}")
     public ResponseEntity<ApiResponse<Object>> deletePostById(
             @PathVariable String postId,

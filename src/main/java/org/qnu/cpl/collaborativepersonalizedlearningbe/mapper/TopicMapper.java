@@ -6,7 +6,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TopicRes
 public class TopicMapper {
 
     public static TopicResponse toResponse(Topic topic) {
-        if (topic == null) return null;
+        if (topic == null)
+            return null;
 
         TopicResponse res = new TopicResponse();
         res.setTopicId(topic.getTopicId());

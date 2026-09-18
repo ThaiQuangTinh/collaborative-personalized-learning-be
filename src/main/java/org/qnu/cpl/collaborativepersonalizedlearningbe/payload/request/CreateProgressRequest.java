@@ -2,7 +2,11 @@ package org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request;
 
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.LearningStatus;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor

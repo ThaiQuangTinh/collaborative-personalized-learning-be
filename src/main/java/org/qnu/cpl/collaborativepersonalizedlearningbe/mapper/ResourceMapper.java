@@ -6,7 +6,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.Resource
 public class ResourceMapper {
 
     public static ResourceResponse toResponse(Resource resource) {
-        if (resource == null) return null;
+        if (resource == null)
+            return null;
 
         ResourceResponse res = new ResourceResponse();
         res.setResourceId(resource.getResourceId());

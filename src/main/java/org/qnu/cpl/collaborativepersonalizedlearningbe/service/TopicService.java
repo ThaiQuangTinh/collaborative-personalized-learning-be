@@ -1,12 +1,12 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateTopicRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateTopicRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LessonResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NoteResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TopicResponse;
-
-import java.util.List;
 
 public interface TopicService {
 

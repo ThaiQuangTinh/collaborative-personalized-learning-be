@@ -1,8 +1,7 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.MailService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.DateTimeUtils;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,7 +9,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +27,7 @@ public class MailServiceImpl implements MailService {
                 "Xác minh email",
                 "Cảm ơn bạn đã đăng ký tài khoản tại <b>Rabbit Learning</b>",
                 code,
-                "Mã này sẽ hết hạn sau 5 phút. Vui lòng không chia sẻ mã này cho bất kỳ ai."
-        );
+                "Mã này sẽ hết hạn sau 5 phút. Vui lòng không chia sẻ mã này cho bất kỳ ai.");
 
         sendHtmlMail(to, subject, html);
     }
@@ -40,8 +40,7 @@ public class MailServiceImpl implements MailService {
                 "Đặt lại mật khẩu",
                 "Bạn vừa yêu cầu đặt lại mật khẩu cho tài khoản <b>Rabbit Learning</b> của mình.",
                 code,
-                "Mã có hiệu lực trong 5 phút. Nếu bạn không yêu cầu, vui lòng bỏ qua email này."
-        );
+                "Mã có hiệu lực trong 5 phút. Nếu bạn không yêu cầu, vui lòng bỏ qua email này.");
 
         sendHtmlMail(to, subject, html);
     }
@@ -52,22 +51,19 @@ public class MailServiceImpl implements MailService {
             String to,
             String lessonTitle,
             String learningPathName,
-            LocalDateTime deadline
-    ) {
+            LocalDateTime deadline) {
         String subject = "Nhắc nhở hoàn thành bài học sắp đến hạn";
 
         String html = buildEmailTemplate(
                 "Sắp đến hạn hoàn thành bài học",
                 """
-                Bài học <b>%s</b> trong lộ trình <b>%s</b> của bạn sắp đến hạn hoàn thành.
-                """.formatted(lessonTitle, learningPathName),
+                        Bài học <b>%s</b> trong lộ trình <b>%s</b> của bạn sắp đến hạn hoàn thành.
+                        """.formatted(lessonTitle, learningPathName),
                 DateTimeUtils.formatEndOfDay(deadline),
-                "Hãy dành thời gian hoàn thành bài học đúng hạn để không bị gián đoạn lộ trình học tập của bạn."
-        );
+                "Hãy dành thời gian hoàn thành bài học đúng hạn để không bị gián đoạn lộ trình học tập của bạn.");
 
         sendHtmlMail(to, subject, html);
     }
-
 
     @Async
     public void sendHtmlMail(String to, String subject, String htmlContent) {

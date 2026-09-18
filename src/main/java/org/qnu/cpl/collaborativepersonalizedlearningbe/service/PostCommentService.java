@@ -1,10 +1,10 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service;
 
+import java.util.List;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreatePostCommentRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdatePostCommentRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.PostCommentResponse;
-
-import java.util.List;
 
 public interface PostCommentService {
 

@@ -1,15 +1,18 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response;
 
-import lombok.*;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.LearningStatus;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class TopicResponse {
 
     private String topicId;

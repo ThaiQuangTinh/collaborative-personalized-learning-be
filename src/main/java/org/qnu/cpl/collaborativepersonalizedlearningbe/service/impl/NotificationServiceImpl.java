@@ -1,10 +1,13 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Lesson;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Notification;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.NotificationSourceType;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.NotificationType;
@@ -12,17 +15,21 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.mapper.NotificationMapper;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NotificationResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.UnreadNotificationCountResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LearningPathRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LessonRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.NotificationRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.PostRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.NotificationService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +44,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final LessonRepository lessonRepository;
 
     private final LearningPathRepository learningPathRepository;
-
-    private final UserSettingRepository userSettingRepository;
 
     private final SimpMessagingTemplate messagingTemplate;
 
@@ -59,8 +64,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         Map<String, Object> meta = Map.of(
                 "postId", postId,
-                "fromUserId", fromUserId
-        );
+                "fromUserId", fromUserId);
 
         Notification noti = new Notification();
         noti.setNotificationId(UUIDUtil.generate());
@@ -85,8 +89,7 @@ public class NotificationServiceImpl implements NotificationService {
         messagingTemplate.convertAndSendToUser(
                 userId,
                 "/queue/notifications",
-                response
-        );
+                response);
 
         System.out.println("Sent notification to user " + userId);
     }
@@ -107,8 +110,7 @@ public class NotificationServiceImpl implements NotificationService {
         Map<String, Object> meta = Map.of(
                 "postId", postId,
                 "commentId", commentId,
-                "fromUserId", fromUserId
-        );
+                "fromUserId", fromUserId);
 
         Notification noti = new Notification();
         noti.setNotificationId(UUIDUtil.generate());
@@ -133,8 +135,7 @@ public class NotificationServiceImpl implements NotificationService {
         messagingTemplate.convertAndSendToUser(
                 userId,
                 "/queue/notifications",
-                response
-        );
+                response);
 
         System.out.println("Sent notification to user " + userId);
     }
@@ -184,8 +185,7 @@ public class NotificationServiceImpl implements NotificationService {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
 
-        List<Notification> notifications =
-                notificationRepository.findTop3ByUser_UserIdOrderBySentAtDesc(userId);
+        List<Notification> notifications = notificationRepository.findTop3ByUser_UserIdOrderBySentAtDesc(userId);
 
         return notifications.stream()
                 .map(NotificationMapper::toResponse)
@@ -225,8 +225,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .orElseThrow(() -> new AppException(ErrorCode.LEARNING_PATH_NOT_FOUND));
 
         Map<String, Object> meta = Map.of(
-                "pathId", learningPath.getPathId()
-        );
+                "pathId", learningPath.getPathId());
 
         Notification noti = new Notification();
         noti.setNotificationId(UUIDUtil.generate());
@@ -252,22 +251,21 @@ public class NotificationServiceImpl implements NotificationService {
         messagingTemplate.convertAndSendToUser(
                 userId,
                 "/queue/notifications",
-                response
-        );
+                response);
 
         System.out.println("Sent notification to user " + userId);
     }
 
     // Đến hạn hoàn thành lộ trình
-//    {
-//        "roadmapId": "r456",
-//            "dueDate": "2025-01-05"
-//    }
+    // {
+    // "roadmapId": "r456",
+    // "dueDate": "2025-01-05"
+    // }
 
     // Hoàn thành lộ trình
-//    {
-//        "roadmapId": "r456",
-//            "dueDate": "2025-01-05"
-//    }
+    // {
+    // "roadmapId": "r456",
+    // "dueDate": "2025-01-05"
+    // }
 
 }

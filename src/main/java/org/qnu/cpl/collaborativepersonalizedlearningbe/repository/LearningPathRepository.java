@@ -1,15 +1,12 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.repository;
 
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.LearningPath;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
 public interface LearningPathRepository extends JpaRepository<LearningPath, String> {
 
     boolean existsByTitle(String title);

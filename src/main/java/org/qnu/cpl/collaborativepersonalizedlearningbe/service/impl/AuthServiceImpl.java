@@ -1,6 +1,7 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.VerificationCode;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
@@ -8,7 +9,14 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.Role;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.AppException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.exception.EmailNotVerifiedException;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.model.UserInfo;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.EmailVerificationRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ForgotPasswordRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.LoginRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.RegisterRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.ResetPasswordRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.TokenRefreshRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.VerifyEmailCodeRequest;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.VerifyResetPasswordCodeRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.LoginResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.RegisterResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.TokenRefreshResponse;
@@ -30,7 +38,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +61,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenUtil jwtTokenUtil;
 
     private final PasswordResetTokenUtil passwordResetTokenUtil;
-
 
     @Override
     @Transactional
@@ -133,8 +140,8 @@ public class AuthServiceImpl implements AuthService {
     public void verifyEmail(VerifyEmailCodeRequest request) {
         // Check userID and code.
         VerificationCode vCode = verificationCodeRepository.findByUserUserIdAndCode(
-                request.getUserId(), request.getCode()
-        ).orElseThrow(() -> new AppException(ErrorCode.INVALID_VERIFICATION_CODE));
+                request.getUserId(), request.getCode())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_VERIFICATION_CODE));
 
         // Check expires time.
         if (vCode.getExpiresAt().isBefore(LocalDateTime.now())) {
@@ -195,8 +202,8 @@ public class AuthServiceImpl implements AuthService {
 
         // Check userID and code.
         VerificationCode vCode = verificationCodeRepository.findByUserUserIdAndCode(
-                user.getUserId(), request.getCode()
-        ).orElseThrow(() -> new AppException(ErrorCode.INVALID_VERIFICATION_CODE));
+                user.getUserId(), request.getCode())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_VERIFICATION_CODE));
 
         // Check expires time.
         if (vCode.getExpiresAt().isBefore(LocalDateTime.now())) {
@@ -256,7 +263,7 @@ public class AuthServiceImpl implements AuthService {
 
         String avatarUrl = userService.getAvatarUrlByUserId(user.getUserId()).getAvatarUrl();
 
-//        userSettingService.initialUserSettings(user.getUserId());
+        // userSettingService.initialUserSettings(user.getUserId());
 
         return LoginResponse.builder()
                 .accessToken(accessToken)
@@ -274,7 +281,6 @@ public class AuthServiceImpl implements AuthService {
                         .build())
                 .build();
     }
-
 
     @Override
     public TokenRefreshResponse refreshToken(TokenRefreshRequest request) {

@@ -6,7 +6,8 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.Notifica
 public class NotificationMapper {
 
     public static NotificationResponse toResponse(Notification notification) {
-        if (notification == null) return null;
+        if (notification == null)
+            return null;
 
         NotificationResponse res = new NotificationResponse();
         res.setNotificationId(notification.getNotificationId());

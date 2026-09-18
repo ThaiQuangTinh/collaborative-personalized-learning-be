@@ -1,6 +1,7 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.Note;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.entity.User;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.enums.ErrorCode;
@@ -10,13 +11,17 @@ import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.CreateNot
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.request.UpdateNoteRequest;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.CreateNoteResponse;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.payload.response.NoteResponse;
-import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.*;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LearningPathRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.LessonRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.NoteRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.TopicRepository;
+import org.qnu.cpl.collaborativepersonalizedlearningbe.repository.UserRepository;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.service.NoteService;
 import org.qnu.cpl.collaborativepersonalizedlearningbe.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -64,10 +69,10 @@ public class NoteServiceImpl implements NoteService {
             default -> throw new AppException(ErrorCode.INVALID_NOTE_TARGET);
         }
 
-//        if (noteRepository.existsByUser_UserIdAndTargetTypeAndTargetIdAndTitle(
-//                userId, targetType, request.getTargetId(), request.getTitle())) {
-//            throw new AppException(ErrorCode.NOTE_TITLE_ALREADY_EXISTS);
-//        }
+        // if (noteRepository.existsByUser_UserIdAndTargetTypeAndTargetIdAndTitle(
+        // userId, targetType, request.getTargetId(), request.getTitle())) {
+        // throw new AppException(ErrorCode.NOTE_TITLE_ALREADY_EXISTS);
+        // }
 
         Integer maxDisplayIndex = noteRepository.findMaxDisplayIndexByTarget(targetType, request.getTargetId());
 
@@ -91,10 +96,8 @@ public class NoteServiceImpl implements NoteService {
                 note.getTargetId(),
                 note.getTitle(),
                 note.getContent(),
-                note.getDisplayIndex()
-        );
+                note.getDisplayIndex());
     }
-
 
     @Override
     @Transactional
@@ -112,8 +115,7 @@ public class NoteServiceImpl implements NoteService {
                 note.getTargetId(),
                 note.getTitle(),
                 note.getContent(),
-                note.getDisplayIndex()
-        );
+                note.getDisplayIndex());
     }
 
     @Override

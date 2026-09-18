@@ -1,6 +1,8 @@
 package org.qnu.cpl.collaborativepersonalizedlearningbe.config;
 
-import lombok.RequiredArgsConstructor;
+import java.security.Principal;
+import java.util.Map;
+
 import org.qnu.cpl.collaborativepersonalizedlearningbe.security.JwtTokenUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
@@ -12,8 +14,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
-import java.security.Principal;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocketMessageBroker
